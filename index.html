@@ -3,259 +3,373 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>性格診断テスト</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <title>人生ハードモード度診断</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            var(--primary-pink): #ff6b6b;
-            --primary-pink: #ff6b6b;
-            --light-pink: #ffe0e0;
-            --bg-color-start: #ffe0e0;
-            --bg-color-end: #ffffff;
-            --dot-color: #ffd1d1;
-            --card-shadow: 0 15px 30px rgba(0,0,0,0.06);
-            --text-color: #4a5568;
-            --text-color-light: #718096;
+            --primary-pink: #ff6eb4;
+            --light-pink: #fff0f5;
+            --border-pink: #ffc0cb;
+            --text-main: #4a4a4a;
+            --text-light: #8c8c8c;
+            --bg-grad-start: #fffafa;
+            --bg-grad-end: #ffe4e1;
+            --btn-blue: #6495ed;
+            --btn-light-blue: #f0f8ff;
         }
 
         body {
             margin: 0;
+            padding: 20px 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-color-start) 0%, var(--bg-color-end) 100%);
-            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background: linear-gradient(135deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
+            background-image: radial-gradient(#ffd1d1 1px, transparent 1px);
             background-size: 20px 20px;
             font-family: 'Noto Sans JP', sans-serif;
-            color: var(--text-color);
+            color: var(--text-main);
         }
 
+        .main-container {
+            width: 95%;
+            max-width: 450px;
+            margin: auto;
+        }
+
+        /* 外側のメインカード */
         .card {
-            background: #ffffff;
-            width: 90%;
-            max-width: 440px;
-            padding: 40px 20px;
-            border-radius: 28px;
-            box-shadow: var(--card-shadow);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             text-align: center;
-            transition: transform 0.3s ease;
-            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
-        h1 { font-size: 1.5rem; color: var(--primary-pink); margin-bottom: 10px; }
-        h2 { font-size: 0.8rem; color: var(--text-color-light); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; }
-
-        #question {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #2d3748;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            min-height: 4.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* 内側のサブカード（診断の見方など） */
+        .sub-card {
+            background: #ffffff;
+            border: 1px dashed var(--border-pink);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .sub-card.solid-border {
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
-        .btn-container { display: flex; flex-direction: column; gap: 12px; }
+        h1 { font-size: 1.4rem; color: var(--primary-pink); margin: 10px 0 20px; }
+        h2 { font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.1em; margin-bottom: 10px; }
+        h3 { font-size: 1.1rem; color: var(--primary-pink); margin: 0 0 15px 0; text-align: center; border-bottom: 1px dashed var(--light-pink); padding-bottom: 10px;}
 
+        p { line-height: 1.6; font-size: 0.95rem; }
+
+        /* タグ */
+        .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .tag { background: var(--light-pink); color: var(--primary-pink); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+
+        /* クイズ画面の質問文 */
+        #question { font-size: 1.2rem; font-weight: 700; line-height: 1.5; margin: 30px 0; min-height: 5rem; display: flex; align-items: center; justify-content: center; }
+
+        /* 5択ボタン */
+        .btn-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;}
         .btn {
-            background: #fff; border: 1px solid #e2e8f0; padding: 16px;
-            border-radius: 16px; font-size: 1rem; font-weight: 700;
-            color: var(--text-color); cursor: pointer; transition: all 0.2s; outline: none;
+            background: #fff; padding: 15px; border-radius: 25px; font-size: 1rem; font-weight: bold;
+            cursor: pointer; transition: 0.2s; border: 1px solid #eee;
         }
-        .btn:hover { background: #f7fafc; border-color: #cbd5e0; transform: translateY(-2px); }
-        .btn:active { transform: translateY(0); }
+        /* 選択肢ごとの色分け */
+        .btn-5 { border-color: var(--primary-pink); color: var(--primary-pink); }
+        .btn-5:hover { background: var(--light-pink); }
+        .btn-4 { border-color: var(--border-pink); color: #ff8fa3; }
+        .btn-4:hover { background: #fff5f7; }
+        .btn-3 { border-color: #e0e0e0; color: #9e9e9e; }
+        .btn-3:hover { background: #f5f5f5; }
+        .btn-2 { border-color: #add8e6; color: #87ceeb; }
+        .btn-2:hover { background: #f0f8ff; }
+        .btn-1 { border-color: var(--btn-blue); color: var(--btn-blue); }
+        .btn-1:hover { background: #e6f0fa; }
 
-        .btn-primary { background: var(--primary-pink); color: white; border: none; }
-        .btn-primary:hover { background: #ff5252; }
-        .btn-check { border-color: #ffd1d1; color: var(--primary-pink); }
-        .btn-check:hover { background: var(--light-pink); border-color: #ffb3b3; }
+        .btn-primary { background: var(--primary-pink); color: white; border: none; border-radius: 30px; padding: 16px; font-size: 1.1rem; width: 100%; font-weight: bold; box-shadow: 0 4px 10px rgba(255, 110, 180, 0.3);}
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 110, 180, 0.4); }
 
-        /* 戻るボタンのスタイル */
-        .btn-back {
-            background: transparent;
-            border: none;
-            color: #a0aec0;
-            font-size: 0.9rem;
-            margin-top: 15px;
-            cursor: pointer;
-            text-decoration: underline;
-            padding: 10px;
-            transition: color 0.2s;
-        }
-        .btn-back:hover { color: var(--text-color-light); }
+        .btn-back { background: transparent; border: none; color: var(--text-light); font-size: 0.85rem; text-decoration: underline; cursor: pointer; padding: 10px; }
 
-        .tags { margin-bottom: 30px; }
-        .tag {
-            display: inline-block; background: var(--light-pink); color: var(--primary-pink);
-            padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; margin: 0 4px;
-        }
+        /* プログレスバー */
+        .progress-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--primary-pink); margin-bottom: 5px; font-weight: bold;}
+        .progress-bar { width: 100%; height: 6px; background: var(--light-pink); border-radius: 10px; overflow: hidden; }
+        #bar { width: 0%; height: 100%; background: var(--primary-pink); transition: width 0.3s; }
 
-        .progress-wrapper {
-            margin-top: 40px; display: flex; justify-content: space-between;
-            align-items: center; font-size: 0.9rem; color: var(--text-color-light);
-        }
-        .progress-bar { width: 70%; height: 6px; background: #edf2f7; border-radius: 10px; overflow: hidden; }
-        #bar { width: 0%; height: 100%; background: var(--primary-pink); transition: width 0.4s; }
+        /* 結果画面特有 */
+        .result-title { font-size: 1.8rem; font-weight: 900; color: var(--primary-pink); margin: 10px 0; }
+        .score-box-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .score-box { flex: 1; border: 1px solid var(--border-pink); border-radius: 16px; padding: 15px 10px; background: #fff;}
+        .score-box-title { font-size: 0.8rem; color: var(--text-light); margin-bottom: 5px; }
+        .score-box-value { font-size: 1.5rem; color: var(--primary-pink); font-weight: bold; }
+
+        /* タイプ別スコアのバー */
+        .type-score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; font-weight: bold;}
+        .type-name { width: 35%; text-align: left; }
+        .type-bar-wrapper { width: 45%; height: 10px; background: var(--light-pink); border-radius: 5px; overflow: hidden; }
+        .type-bar { height: 100%; background: var(--primary-pink); border-radius: 5px; }
+        .type-pt { width: 15%; text-align: right; color: var(--text-light); font-size: 0.8rem;}
 
         #quiz-area, #result-area { display: none; }
     </style>
 </head>
 <body>
 
+<div class="main-container">
     <div class="card">
         <div id="start-area">
-            <h2>Personality Quiz</h2>
-            <h1>人生ハードモード度診断？</h1>
+            <h2>30問・10タイプ版</h2>
+            <h1>なんでこんなに生きづらいか<br>人生ハードモード度診断</h1>
+            
             <div class="tags">
-                <span class="tag">全30問</span>
-                <span class="tag">直感で回答</span>
+                <span class="tag">5択で直感</span>
+                <span class="tag">3秒以内で回答推奨</span>
                 <span class="tag">スマホ向け</span>
             </div>
-            <p style="color: var(--text-color-light); line-height: 1.6; margin-bottom: 40px;">
-                あなたの心の傾向を、ざっくり言語化するためのセルフチェックです。深く考えすぎず、直感で答えてください。
-            </p>
-            <button class="btn btn-primary" onclick="startQuiz()" style="width: 100%;">診断をはじめる</button>
+
+            <p style="margin-bottom: 25px;">「なんか生きづらい」を、ざっくり言語化するためのセルフチェックです。深く考えすぎず、直感で答えてください。</p>
+
+            <button class="btn-primary" onclick="startQuiz()">診断をはじめる</button>
+
+            <div class="sub-card" style="margin-top: 25px; text-align: center; color: var(--text-light);">
+                当てはまったらちょっとしんどいかも
+            </div>
+
+            <div class="sub-card">
+                <h3>診断の見方</h3>
+                <p>「そう思う」度合いのスコアと、当てはまった質問グループから、今の傾向が強く出ているタイプを判定します。</p>
+            </div>
+
+            <div class="sub-card">
+                <h3>出るタイプ</h3>
+                <div class="tags" style="justify-content: flex-start;">
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">自責ループ型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">気遣い消耗型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">SNS比較ダメージ型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">不安先取り型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">完璧主義バグ型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">無気力ループ型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">本音封印型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">依存気質型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">孤立バランス崩壊型</span>
+                    <span class="tag" style="background:#fff; border: 1px solid var(--border-pink); font-weight:normal;">方向迷子型</span>
+                </div>
+            </div>
+
+            <div class="sub-card">
+                <h3>ひとこと</h3>
+                <p>これはエンタメ寄りのセルフチェックです。しんどさが強いときは、ひとりで抱え込みすぎないでください。</p>
+            </div>
         </div>
 
         <div id="quiz-area">
-            <h2>Personality Quiz</h2>
+            <div class="progress-header">
+                <span id="progress-text">1 / 30</span>
+                <span style="color:var(--text-light); font-weight:normal;">3秒以内で直感</span>
+            </div>
+            <div class="progress-bar"><div id="bar"></div></div>
+
+            <h2 style="color:var(--primary-pink); text-align:center; margin-top:20px;">質問</h2>
             <p id="question">読み込み中...</p>
             
             <div class="btn-container">
-                <button class="btn btn-check" onclick="answer(1)">とってもそう思う</button>
-                <button class="btn" onclick="answer(0)">どちらともいえない</button>
-                <button class="btn btn-check" onclick="answer(-1)">まったくそうは思わない</button>
+                <button class="btn btn-5" onclick="answer(4)">とってもそう思う</button>
+                <button class="btn btn-4" onclick="answer(3)">どちらかといえばそう思う</button>
+                <button class="btn btn-3" onclick="answer(2)">どちらともいえない</button>
+                <button class="btn btn-2" onclick="answer(1)">どちらかといえばそう思わない</button>
+                <button class="btn btn-1" onclick="answer(0)">まったくそうは思わない</button>
             </div>
             
             <button class="btn-back" id="back-btn" onclick="goBack()">1つ前の質問に戻る</button>
-
-            <div class="progress-wrapper">
-                <div class="progress-bar">
-                    <div id="bar"></div>
-                </div>
-                <div id="progress-text">1 / 30</div>
-            </div>
         </div>
 
         <div id="result-area">
-            <h2>あなたのタイプは</h2>
-            <div class="type-code" id="type" style="font-size: 3.5rem; font-weight: 900; color: var(--primary-pink); margin: 20px 0;"></div>
-            <p id="description" style="color: var(--text-color-light); line-height: 1.6;">診断結果が出ました。これがあなたの持つ本来の強みです。</p>
-            <button class="btn btn-primary" style="margin-top:30px; width:100%;" onclick="location.reload()">もう一度診断する</button>
+            <h2>診断結果</h2>
+            <div class="result-title" id="main-type-name">〇〇型</div>
+            <p style="font-weight:bold; margin-bottom:20px;">あなたのメイン傾向はコレ！</p>
+
+            <div class="score-box-container">
+                <div class="score-box">
+                    <div class="score-box-title">ハード度スコア</div>
+                    <div class="score-box-value" id="total-score">0pt</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">ハードモード傾向</div>
+                    <div class="score-box-value" id="hard-level" style="font-size:1.2rem;">Lv.1<br>余裕あり</div>
+                </div>
+            </div>
+
+            <div class="sub-card solid-border">
+                <p id="main-description">ここに解説文が入ります。</p>
+            </div>
+
+            <div class="sub-card solid-border" style="margin-top: 30px;">
+                <h3 style="border:none; margin-bottom:5px;">タイプ別スコア</h3>
+                <p style="font-size:0.8rem; color:var(--text-light); text-align:center; margin-bottom:20px;">当てはまった項目の重なりで判定</p>
+                <div id="type-score-list">
+                    </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top:10px;" onclick="location.reload()">もう一度診断する</button>
         </div>
     </div>
+</div>
 
-    <script>
-        // 本格的な30問の質問リスト
-        const questions = [
-            /* E/I (外向/内向) */
-            { text: "初対面の人ともすぐに打ち解けて会話を楽しめる", trait: "E" },
-            { text: "休日は外に出かけるより、家で一人で静かに過ごす方が好きだ", trait: "I" },
-            { text: "頭の中で考えるよりも、声に出して人と話しながら考えをまとめる", trait: "E" },
-            { text: "大勢の集まりに参加した後は、一人になってエネルギーを回復する時間が必要だ", trait: "I" },
-            { text: "注目を浴びるような場では、つい張り切ってしまう", trait: "E" },
-            { text: "自分のことについて話すより、人の話を聞いている方が落ち着く", trait: "I" },
-            { text: "メッセージのやり取りより、直接会ったり電話で話す方が早いと思う", trait: "E" },
-            { text: "新しい環境に入るときは、自分から積極的に話しかける", trait: "E" },
+<script>
+    // 10タイプと解説文の定義
+    const typeInfo = {
+        "自責ループ型": "今はかなり心に負担がかかっている状態かもしれません。何でも「自分が悪い」と背負い込みすぎていませんか？まずは「自分は今しんどいんだ」と認めて、自分を許す練習から始めてみてください。",
+        "気遣い消耗型": "常に周りの空気を読んで、自分のエネルギーを他人に渡しすぎている状態です。他人の機嫌は他人のもの。少しだけ「嫌われてもいいや」と割り切る日を作ってみてください。",
+        "SNS比較ダメージ型": "他人のキラキラした部分と、自分のリアルを比べて削られていませんか？SNSの世界は編集されたハイライトです。思い切ってデジタルデトックスをする時間を確保しましょう。",
+        "不安先取り型": "まだ起きていない未来のリスクばかり考えて、現在を楽しめなくなっています。不安の9割は実際には起こりません。「今、ここ」に集中するマインドフルネスを取り入れてみて。",
+        "完璧主義バグ型": "「100点じゃないと意味がない」という呪いにかかっています。その高い理想が、逆に行動のブレーキになっているかも。まずは「60点で完了させる」ことを目標にしてみましょう。",
+        "無気力ループ型": "心も体もエネルギーがすっからかんの状態です。今は無理に頑張ろうとせず、徹底的に休む時期。何も生産的なことをしなくても、生きているだけで十分偉いですよ。",
+        "本音封印型": "波風を立てないために、自分の本当の気持ちを心の奥底に押し込めてしまっています。まずはノートに誰にも見せない本音を書き殴るなど、感情のガス抜きをしてください。",
+        "依存気質型": "自分の価値を「誰かに必要とされること」に委ねてしまっているかも。一人の時間を楽しめるようになると、人間関係もグッと楽になります。自分を自分で満たす練習を。",
+        "孤立バランス崩壊型": "「どうせ誰も分かってくれない」と心のシャッターを下ろして孤立を選んでいませんか？本当は寂しい気持ちがあるなら、ほんの少しだけ他人に弱音を吐いてみてください。",
+        "方向迷子型": "周りの正解に合わせて生きてきた結果、自分の本当の「好き」や「やりたいこと」が分からなくなっています。損得を抜きにして、心がちょっとだけ動く小さなことに挑戦してみて。"
+    };
 
-            /* S/N (感覚/直観) */
-            { text: "抽象的な概念や理論よりも、具体的な事実や経験を信じる", trait: "S" },
-            { text: "ふとした瞬間に「もし〜だったら」と現実にはない未来の妄想をしている", trait: "N" },
-            { text: "物事を進めるときは「これまでのやり方や実績」を参考にすることが多い", trait: "S" },
-            { text: "細かいデータや数字よりも、全体の大きな流れや「意味」を捉えるのが得意だ", trait: "N" },
-            { text: "映画や本は、現実離れしたファンタジーよりもノンフィクションや日常系が好きだ", trait: "S" },
-            { text: "一つの物事に対して、隠された裏の意味や複数の可能性をつい考えてしまう", trait: "N" },
-            { text: "何かを作ったり組み立てたりするとき、説明書をしっかり読んでから取り掛かる", trait: "S" },
+    // 10タイプ×3問 = 30問の質問リスト
+    const questions = [
+        { text: "何かミスがあると、まず「自分が悪い」と思ってしまう", type: "自責ループ型" },
+        { text: "相手の顔色を常に伺って行動してしまう", type: "気遣い消耗型" },
+        { text: "SNSで他人の充実した生活を見るとひどく落ち込む", type: "SNS比較ダメージ型" },
+        { text: "まだ起きていない最悪の事態ばかり想像してしまう", type: "不安先取り型" },
+        { text: "100点じゃないと意味がないと思ってしまう", type: "完璧主義バグ型" },
+        { text: "休日は何もする気が起きず、一日中寝てしまう", type: "無気力ループ型" },
+        { text: "自分の本当の気持ちや意見を言うのが怖い", type: "本音封印型" },
+        { text: "一人でいると寂しくてたまらず、誰かと繋がっていたい", type: "依存気質型" },
+        { text: "誰にも頼らず、全て自分一人で解決しようとする", type: "孤立バランス崩壊型" },
+        { text: "自分のやりたいことや好きなことが全く分からない", type: "方向迷子型" },
 
-            /* T/F (思考/感情) */
-            { text: "決断を下すときは、自分の感情よりも「論理的な正しさ」を重視する", trait: "T" },
-            { text: "人の気持ちの変化に敏感で、相手が傷つかない言葉を選ぶよう心がけている", trait: "F" },
-            { text: "誰かが悩んでいるとき、共感するよりも具体的な解決策を提案したくなる", trait: "T" },
-            { text: "効率や正論よりも、みんなが納得して気持ちよく進められることの方が大切だ", trait: "F" },
-            { text: "グループの調和が乱れても、間違っていることはハッキリ指摘すべきだと思う", trait: "T" },
-            { text: "悲しい映画やニュースを見ると、深く感情移入して泣いてしまうことが多い", trait: "F" },
-            { text: "議論になると、つい白熱して相手の意見を論理的に論破しようとしてしまう", trait: "T" },
+        { text: "過去の失敗を何度も思い出して、一人で反省会をしてしまう", type: "自責ループ型" },
+        { text: "頼み事を断るのが非常に苦手で、つい引き受けてしまう", type: "気遣い消耗型" },
+        { text: "いいねの数や他人の反応が気になって仕方ない", type: "SNS比較ダメージ型" },
+        { text: "心配事で夜眠れなくなることがよくある", type: "不安先取り型" },
+        { text: "細かいところが気になって、いつまでも作業が終わらない", type: "完璧主義バグ型" },
+        { text: "以前楽しかった趣味にも、今は全く興味が湧かない", type: "無気力ループ型" },
+        { text: "怒りや悲しみを我慢して、無理に笑顔を作ってしまう", type: "本音封印型" },
+        { text: "特定の人やモノがないと生きていけないと感じる", type: "依存気質型" },
+        { text: "人と深く関わることを無意識に避けている", type: "孤立バランス崩壊型" },
+        { text: "周りの意見に流されて決断してしまうことが多い", type: "方向迷子型" },
 
-            /* J/P (判断/知覚) */
-            { text: "旅行や遊びの予定は、事前にしっかりスケジュールを立てておきたい", trait: "J" },
-            { text: "休日は予定を決めず、その日の気分で自由に行動したい", trait: "P" },
-            { text: "部屋や机の上が散らかっていると、気になって作業に集中できない", trait: "J" },
-            { text: "期限ギリギリにならないと本気（やる気）を出せないことが多い", trait: "P" },
-            { text: "やるべきタスクはリスト化し、終わったものから一つずつ消していくのが好きだ", trait: "J" },
-            { text: "突然の予定変更やトラブルにも、柔軟にアドリブで対応できる自信がある", trait: "P" },
-            { text: "買い物をするとき、事前に決めたもの以外のものを衝動買いしてしまうことが多い", trait: "P" },
-            { text: "ルールや規則は、絶対に守るべきものだと思う", trait: "J" }
-        ];
+        { text: "褒められても「自分なんて」と強く否定してしまう", type: "自責ループ型" },
+        { text: "人が集まる場所から帰ると、ドッと疲れて動けなくなる", type: "気遣い消耗型" },
+        { text: "ネット上の批判的な意見を自分のことのように受け取る", type: "SNS比較ダメージ型" },
+        { text: "新しいことを始める前、失敗するリスクばかり考える", type: "不安先取り型" },
+        { text: "理想が高すぎて、結局行動に移せないことが多い", type: "完璧主義バグ型" },
+        { text: "「どうせ頑張っても無駄だ」と思うことが最近多い", type: "無気力ループ型" },
+        { text: "誰に対しても「いい人」を演じて疲れ果てている", type: "本音封印型" },
+        { text: "相手の返信が遅いと、嫌われたのではないかと酷く焦る", type: "依存気質型" },
+        { text: "「誰も自分のことなんて本当に理解してくれない」と感じる", type: "孤立バランス崩壊型" },
+        { text: "これからの人生に対して、漠然とした焦りだけがある", type: "方向迷子型" }
+    ];
 
-        let currentIdx = 0;
-        // ユーザーの回答を記録しておく配列（戻るボタン用）
-        let userAnswers = new Array(questions.length).fill(0);
+    let currentIdx = 0;
+    let userAnswers = new Array(questions.length).fill(0);
 
-        function startQuiz() {
-            document.getElementById("start-area").style.display = "none";
-            document.getElementById("quiz-area").style.display = "block";
+    function startQuiz() {
+        document.getElementById("start-area").style.display = "none";
+        document.getElementById("quiz-area").style.display = "block";
+        updateQuiz();
+    }
+
+    function updateQuiz() {
+        document.getElementById("question").innerText = questions[currentIdx].text;
+        document.getElementById("bar").style.width = ((currentIdx + 1) / questions.length * 100) + "%";
+        document.getElementById("progress-text").innerText = (currentIdx + 1) + " / " + questions.length;
+        document.getElementById("back-btn").style.display = (currentIdx === 0) ? "none" : "inline-block";
+    }
+
+    function answer(pts) {
+        userAnswers[currentIdx] = pts; // 4, 3, 2, 1, 0 のいずれかを記録
+        currentIdx++;
+        if (currentIdx < questions.length) {
+            updateQuiz();
+        } else {
+            calculateResult();
+        }
+    }
+
+    function goBack() {
+        if (currentIdx > 0) {
+            currentIdx--;
             updateQuiz();
         }
+    }
 
-        function updateQuiz() {
-            document.getElementById("question").innerText = questions[currentIdx].text;
-            document.getElementById("bar").style.width = ((currentIdx + 1) / questions.length * 100) + "%";
-            document.getElementById("progress-text").innerText = (currentIdx + 1) + " / " + questions.length;
+    function calculateResult() {
+        document.getElementById("quiz-area").style.display = "none";
+        document.getElementById("result-area").style.display = "block";
+
+        // 各タイプのスコアを集計するオブジェクトを初期化
+        let typeScores = {};
+        Object.keys(typeInfo).forEach(key => typeScores[key] = 0);
+        let totalScore = 0;
+
+        // 回答データから集計
+        for (let i = 0; i < questions.length; i++) {
+            let pts = userAnswers[i];
+            let type = questions[i].type;
+            typeScores[type] += pts;
+            totalScore += pts;
+        }
+
+        // スコアが高い順に並び替え（同点の場合は適当）
+        let sortedTypes = Object.keys(typeScores).sort((a, b) => typeScores[b] - typeScores[a]);
+        
+        // メインタイプ（1位）
+        let mainType = sortedTypes[0];
+        
+        // --- 結果画面への反映 ---
+        document.getElementById("main-type-name").innerText = mainType;
+        document.getElementById("total-score").innerText = totalScore + "pt";
+        
+        // 解説文にスコアを混ぜて表示
+        document.getElementById("main-description").innerHTML = 
+            `スコア${totalScore}pt。「${mainType}」の傾向が一番強く出ています。<br><br>` + typeInfo[mainType];
+
+        // ハードモード傾向Lvの判定 (最大120pt)
+        let lvText = "";
+        if (totalScore >= 90) lvText = "Lv.MAX<br>激ヤバ";
+        else if (totalScore >= 60) lvText = "Lv.3<br>しんどい";
+        else if (totalScore >= 30) lvText = "Lv.2<br>ちょい疲れ";
+        else lvText = "Lv.1<br>余裕あり";
+        document.getElementById("hard-level").innerHTML = lvText;
+
+        // タイプ別スコアのバーを生成
+        let listHtml = "";
+        // 上位5個だけ表示するか、全部表示するか。今回は上位5個を表示。
+        for (let i = 0; i < 5; i++) {
+            let tName = sortedTypes[i];
+            let tScore = typeScores[tName];
+            let maxTypeScore = 12; // 1タイプ3問 × 最大4点 = 12点満点
+            let barWidth = (tScore / maxTypeScore) * 100;
             
-            // 1問目のときは「戻るボタン」を隠す
-            document.getElementById("back-btn").style.display = (currentIdx === 0) ? "none" : "inline-block";
+            listHtml += `
+                <div class="type-score-row">
+                    <div class="type-name">${tName}</div>
+                    <div class="type-bar-wrapper">
+                        <div class="type-bar" style="width: ${barWidth}%;"></div>
+                    </div>
+                    <div class="type-pt">${tScore} pt</div>
+                </div>
+            `;
         }
-
-        function answer(val) {
-            // 回答を配列に記録する
-            userAnswers[currentIdx] = val;
-            
-            currentIdx++;
-            if (currentIdx < questions.length) {
-                updateQuiz();
-            } else {
-                calculateAndShowResult();
-            }
-        }
-
-        function goBack() {
-            if (currentIdx > 0) {
-                currentIdx--; // 1つ前の問題に戻る
-                updateQuiz();
-            }
-        }
-
-        function calculateAndShowResult() {
-            document.getElementById("quiz-area").style.display = "none";
-            document.getElementById("result-area").style.display = "block";
-
-            // ここで一気にスコアを計算する
-            let scores = { E:0, I:0, N:0, S:0, T:0, F:0, J:0, P:0 };
-            const opposite = { "E":"I", "I":"E", "N":"S", "S":"N", "T":"F", "F":"T", "J":"P", "P":"J" };
-
-            for (let i = 0; i < questions.length; i++) {
-                let ans = userAnswers[i];
-                let trait = questions[i].trait;
-                
-                if (ans === 1) {
-                    scores[trait]++;
-                } else if (ans === -1) {
-                    scores[opposite[trait]]++;
-                }
-            }
-
-            // 最終判定
-            let mbti = "";
-            mbti += (scores.E >= scores.I) ? "E" : "I";
-            mbti += (scores.N >= scores.S) ? "N" : "S";
-            mbti += (scores.T >= scores.F) ? "T" : "F";
-            mbti += (scores.J >= scores.P) ? "J" : "P";
-
-            document.getElementById("type").innerText = mbti;
-        }
-    </script>
+        document.getElementById("type-score-list").innerHTML = listHtml;
+        
+        // 画面トップへスクロール
+        window.scrollTo(0, 0);
+    }
+</script>
 </body>
 </html>
