@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ピンク系の色に変更 */
-            --primary-pink: #ff6b6b; /* タイトル、ボタンのピンク */
-            --light-pink: #ffe0e0; /* タグ、背景の薄ピンク */
-            --bg-color-start: #ffe0e0; /* 背景グラデーション開始 */
-            --bg-color-end: #ffffff; /* 背景グラデーション終了 */
-            --dot-color: #ffd1d1; /* ドットの色 */
-            --card-shadow: 0 15px 30px rgba(0,0,0,0.06); /* カードの影を薄く */
+            var(--primary-pink): #ff6b6b;
+            --primary-pink: #ff6b6b;
+            --light-pink: #ffe0e0;
+            --bg-color-start: #ffe0e0;
+            --bg-color-end: #ffffff;
+            --dot-color: #ffd1d1;
+            --card-shadow: 0 15px 30px rgba(0,0,0,0.06);
             --text-color: #4a5568;
             --text-color-light: #718096;
         }
@@ -24,7 +24,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* 背景のグラデーションとドットパターン */
             background: linear-gradient(135deg, var(--bg-color-start) 0%, var(--bg-color-end) 100%);
             background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
             background-size: 20px 20px;
@@ -37,128 +36,70 @@
             width: 90%;
             max-width: 440px;
             padding: 40px 20px;
-            border-radius: 28px; /* 角をさらに丸く */
+            border-radius: 28px;
             box-shadow: var(--card-shadow);
             text-align: center;
             transition: transform 0.3s ease;
             box-sizing: border-box;
         }
 
-        /* タイトルの色をピンクに */
-        h1 {
-            font-size: 1.5rem;
-            color: var(--primary-pink);
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            font-size: 0.8rem;
-            color: var(--text-color-light);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-        }
+        h1 { font-size: 1.5rem; color: var(--primary-pink); margin-bottom: 10px; }
+        h2 { font-size: 0.8rem; color: var(--text-color-light); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; }
 
         #question {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #2d3748;
             line-height: 1.6;
             margin-bottom: 30px;
-            min-height: 4rem;
+            min-height: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .btn-container { display: flex; flex-direction: column; gap: 12px; }
 
         .btn {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            padding: 16px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.2s;
-            outline: none;
+            background: #fff; border: 1px solid #e2e8f0; padding: 16px;
+            border-radius: 16px; font-size: 1rem; font-weight: 700;
+            color: var(--text-color); cursor: pointer; transition: all 0.2s; outline: none;
         }
+        .btn:hover { background: #f7fafc; border-color: #cbd5e0; transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
 
-        .btn:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-            transform: translateY(-2px);
-        }
+        .btn-primary { background: var(--primary-pink); color: white; border: none; }
+        .btn-primary:hover { background: #ff5252; }
+        .btn-check { border-color: #ffd1d1; color: var(--primary-pink); }
+        .btn-check:hover { background: var(--light-pink); border-color: #ffb3b3; }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        /* ピンク色の塗りつぶしボタン（「診断をはじめる」など） */
-        .btn-primary {
-            background: var(--primary-pink);
-            color: white;
+        /* 戻るボタンのスタイル */
+        .btn-back {
+            background: transparent;
             border: none;
-        }
-
-        .btn-primary:hover {
-            background: #ff5252;
-        }
-
-        /* 診断中の選択肢ボタン（ピンク系） */
-        .btn-check {
-            border-color: #ffd1d1;
-            color: var(--primary-pink);
-        }
-
-        .btn-check:hover {
-            background: var(--light-pink);
-            border-color: #ffb3b3;
-        }
-
-        /* タグ */
-        .tags {
-            margin-bottom: 30px;
-        }
-
-        .tag {
-            display: inline-block;
-            background: var(--light-pink);
-            color: var(--primary-pink);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin: 0 4px;
-        }
-
-        /* プログレスバー */
-        .progress-wrapper {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: #a0aec0;
             font-size: 0.9rem;
-            color: var(--text-color-light);
+            margin-top: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 10px;
+            transition: color 0.2s;
+        }
+        .btn-back:hover { color: var(--text-color-light); }
+
+        .tags { margin-bottom: 30px; }
+        .tag {
+            display: inline-block; background: var(--light-pink); color: var(--primary-pink);
+            padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; margin: 0 4px;
         }
 
-        .progress-bar {
-            width: 70%;
-            height: 6px;
-            background: #edf2f7;
-            border-radius: 10px;
-            overflow: hidden;
+        .progress-wrapper {
+            margin-top: 40px; display: flex; justify-content: space-between;
+            align-items: center; font-size: 0.9rem; color: var(--text-color-light);
         }
-        #bar {
-            width: 0%;
-            height: 100%;
-            background: var(--primary-pink);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .progress-bar { width: 70%; height: 6px; background: #edf2f7; border-radius: 10px; overflow: hidden; }
+        #bar { width: 0%; height: 100%; background: var(--primary-pink); transition: width 0.4s; }
 
-        /* 各エリアの表示切り替え */
         #quiz-area, #result-area { display: none; }
     </style>
 </head>
@@ -167,16 +108,16 @@
     <div class="card">
         <div id="start-area">
             <h2>Personality Quiz</h2>
-            <h1>性格診断テスト</h1>
+            <h1>人生ハードモード度診断？</h1>
             <div class="tags">
-                <span class="tag">MBTI</span>
-                <span class="tag">3択で直感</span>
+                <span class="tag">全30問</span>
+                <span class="tag">直感で回答</span>
                 <span class="tag">スマホ向け</span>
             </div>
             <p style="color: var(--text-color-light); line-height: 1.6; margin-bottom: 40px;">
                 あなたの心の傾向を、ざっくり言語化するためのセルフチェックです。深く考えすぎず、直感で答えてください。
             </p>
-            <button class="btn btn-primary" onclick="startQuiz()">診断をはじめる</button>
+            <button class="btn btn-primary" onclick="startQuiz()" style="width: 100%;">診断をはじめる</button>
         </div>
 
         <div id="quiz-area">
@@ -184,38 +125,74 @@
             <p id="question">読み込み中...</p>
             
             <div class="btn-container">
-                <button class="btn btn-check" onclick="answer(1)">あてはまる</button>
-                <button class="btn" onclick="answer(0)">どちらでもない</button>
-                <button class="btn btn-check" onclick="answer(-1)">あてはまらない</button>
+                <button class="btn btn-check" onclick="answer(1)">とってもそう思う</button>
+                <button class="btn" onclick="answer(0)">どちらともいえない</button>
+                <button class="btn btn-check" onclick="answer(-1)">まったくそうは思わない</button>
             </div>
+            
+            <button class="btn-back" id="back-btn" onclick="goBack()">1つ前の質問に戻る</button>
 
             <div class="progress-wrapper">
                 <div class="progress-bar">
                     <div id="bar"></div>
                 </div>
-                <div id="progress-text">1 / 5</div>
+                <div id="progress-text">1 / 30</div>
             </div>
         </div>
 
         <div id="result-area">
-            <h2>Your Type</h2>
-            <div class="type-code" id="type" style="font-size: 3rem; font-weight: 900; color: var(--primary-pink); margin: 20px 0;"></div>
-            <p id="description" style="color: var(--text-color-light); line-height: 1.6;">診断結果が出ました。これがあなたの心の傾向です。</p>
-            <button class="btn" style="margin-top:30px; width:100%;" onclick="location.reload()">もう一度診断する</button>
+            <h2>あなたのタイプは</h2>
+            <div class="type-code" id="type" style="font-size: 3.5rem; font-weight: 900; color: var(--primary-pink); margin: 20px 0;"></div>
+            <p id="description" style="color: var(--text-color-light); line-height: 1.6;">診断結果が出ました。これがあなたの持つ本来の強みです。</p>
+            <button class="btn btn-primary" style="margin-top:30px; width:100%;" onclick="location.reload()">もう一度診断する</button>
         </div>
     </div>
 
     <script>
+        // 本格的な30問の質問リスト
         const questions = [
-            { text: "新しい場所やイベントに行くとワクワクする", trait: "E" },
-            { text: "事実よりも、その裏にある意味や可能性を考えるのが好きだ", trait: "N" },
-            { text: "決断を下すときは、感情よりも論理的な正しさを優先する", trait: "T" },
-            { text: "計画はあらかじめ細かく決めておきたい", trait: "J" },
-            { text: "期限ギリギリにならないとやる気が出ない", trait: "P" }
+            /* E/I (外向/内向) */
+            { text: "初対面の人ともすぐに打ち解けて会話を楽しめる", trait: "E" },
+            { text: "休日は外に出かけるより、家で一人で静かに過ごす方が好きだ", trait: "I" },
+            { text: "頭の中で考えるよりも、声に出して人と話しながら考えをまとめる", trait: "E" },
+            { text: "大勢の集まりに参加した後は、一人になってエネルギーを回復する時間が必要だ", trait: "I" },
+            { text: "注目を浴びるような場では、つい張り切ってしまう", trait: "E" },
+            { text: "自分のことについて話すより、人の話を聞いている方が落ち着く", trait: "I" },
+            { text: "メッセージのやり取りより、直接会ったり電話で話す方が早いと思う", trait: "E" },
+            { text: "新しい環境に入るときは、自分から積極的に話しかける", trait: "E" },
+
+            /* S/N (感覚/直観) */
+            { text: "抽象的な概念や理論よりも、具体的な事実や経験を信じる", trait: "S" },
+            { text: "ふとした瞬間に「もし〜だったら」と現実にはない未来の妄想をしている", trait: "N" },
+            { text: "物事を進めるときは「これまでのやり方や実績」を参考にすることが多い", trait: "S" },
+            { text: "細かいデータや数字よりも、全体の大きな流れや「意味」を捉えるのが得意だ", trait: "N" },
+            { text: "映画や本は、現実離れしたファンタジーよりもノンフィクションや日常系が好きだ", trait: "S" },
+            { text: "一つの物事に対して、隠された裏の意味や複数の可能性をつい考えてしまう", trait: "N" },
+            { text: "何かを作ったり組み立てたりするとき、説明書をしっかり読んでから取り掛かる", trait: "S" },
+
+            /* T/F (思考/感情) */
+            { text: "決断を下すときは、自分の感情よりも「論理的な正しさ」を重視する", trait: "T" },
+            { text: "人の気持ちの変化に敏感で、相手が傷つかない言葉を選ぶよう心がけている", trait: "F" },
+            { text: "誰かが悩んでいるとき、共感するよりも具体的な解決策を提案したくなる", trait: "T" },
+            { text: "効率や正論よりも、みんなが納得して気持ちよく進められることの方が大切だ", trait: "F" },
+            { text: "グループの調和が乱れても、間違っていることはハッキリ指摘すべきだと思う", trait: "T" },
+            { text: "悲しい映画やニュースを見ると、深く感情移入して泣いてしまうことが多い", trait: "F" },
+            { text: "議論になると、つい白熱して相手の意見を論理的に論破しようとしてしまう", trait: "T" },
+
+            /* J/P (判断/知覚) */
+            { text: "旅行や遊びの予定は、事前にしっかりスケジュールを立てておきたい", trait: "J" },
+            { text: "休日は予定を決めず、その日の気分で自由に行動したい", trait: "P" },
+            { text: "部屋や机の上が散らかっていると、気になって作業に集中できない", trait: "J" },
+            { text: "期限ギリギリにならないと本気（やる気）を出せないことが多い", trait: "P" },
+            { text: "やるべきタスクはリスト化し、終わったものから一つずつ消していくのが好きだ", trait: "J" },
+            { text: "突然の予定変更やトラブルにも、柔軟にアドリブで対応できる自信がある", trait: "P" },
+            { text: "買い物をするとき、事前に決めたもの以外のものを衝動買いしてしまうことが多い", trait: "P" },
+            { text: "ルールや規則は、絶対に守るべきものだと思う", trait: "J" }
         ];
 
         let currentIdx = 0;
-        let scores = { E:0, I:0, N:0, S:0, T:0, F:0, J:0, P:0 };
+        // ユーザーの回答を記録しておく配列（戻るボタン用）
+        let userAnswers = new Array(questions.length).fill(0);
 
         function startQuiz() {
             document.getElementById("start-area").style.display = "none";
@@ -227,27 +204,50 @@
             document.getElementById("question").innerText = questions[currentIdx].text;
             document.getElementById("bar").style.width = ((currentIdx + 1) / questions.length * 100) + "%";
             document.getElementById("progress-text").innerText = (currentIdx + 1) + " / " + questions.length;
+            
+            // 1問目のときは「戻るボタン」を隠す
+            document.getElementById("back-btn").style.display = (currentIdx === 0) ? "none" : "inline-block";
         }
 
         function answer(val) {
-            const q = questions[currentIdx];
-            const opposite = { "E":"I", "N":"S", "T":"F", "J":"P", "P":"J" };
+            // 回答を配列に記録する
+            userAnswers[currentIdx] = val;
             
-            if (val === 1) scores[q.trait]++;
-            else if (val === -1) scores[opposite[q.trait]]++;
-
             currentIdx++;
             if (currentIdx < questions.length) {
                 updateQuiz();
             } else {
-                showResult();
+                calculateAndShowResult();
             }
         }
 
-        function showResult() {
+        function goBack() {
+            if (currentIdx > 0) {
+                currentIdx--; // 1つ前の問題に戻る
+                updateQuiz();
+            }
+        }
+
+        function calculateAndShowResult() {
             document.getElementById("quiz-area").style.display = "none";
             document.getElementById("result-area").style.display = "block";
 
+            // ここで一気にスコアを計算する
+            let scores = { E:0, I:0, N:0, S:0, T:0, F:0, J:0, P:0 };
+            const opposite = { "E":"I", "I":"E", "N":"S", "S":"N", "T":"F", "F":"T", "J":"P", "P":"J" };
+
+            for (let i = 0; i < questions.length; i++) {
+                let ans = userAnswers[i];
+                let trait = questions[i].trait;
+                
+                if (ans === 1) {
+                    scores[trait]++;
+                } else if (ans === -1) {
+                    scores[opposite[trait]]++;
+                }
+            }
+
+            // 最終判定
             let mbti = "";
             mbti += (scores.E >= scores.I) ? "E" : "I";
             mbti += (scores.N >= scores.S) ? "N" : "S";
