@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>性格診断テスト</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            --primary-color: #667eea;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .card {
+            background: white;
+            width: 90%;
+            max-width: 420px;
+            padding: 40px 30px;
+            border-radius: 32px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        h2 {
+            font-size: 0.8rem;
+            color: #a0aec0;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        #question {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            min-height: 4.5rem;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            background: #f7fafc;
+            border: 1px solid #edf2f7;
+            padding: 18px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .btn:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* プログレスバー */
+        .progress-bar {
+            margin-top: 40px;
+            width: 100%;
+            height: 6px;
+            background: #edf2f7;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #bar {
+            width: 20%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 結果エリア */
+        #result-area { display: none; }
+        .type-code {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="quiz-area">
+            <h2>Personality Quiz</h2>
+            <p id="question">読み込み中...</p>
+            
+            <div class="btn-container">
+                <button class="btn" onclick="answer(1)">あてはまる</button>
+                <button class="btn" onclick="answer(0)">どちらでもない</button>
+                <button class="btn" onclick="answer(-1)">あてはまらない</button>
+            </div>
+
+            <div class="progress-bar">
+                <div id="bar"></div>
+            </div>
+        </div>
+
+        <div id="result-area">
+            <h2>Your Type</h2>
+            <div class="type-code" id="type"></div>
+            <p id="description" style="color: #718096; line-height: 1.6;">診断結果が出ました。これがあなたの強みです。</p>
+            <button class="btn" style="margin-top:30px; width:100%; background: #edf2f7;" onclick="location.reload()">もう一度診断する</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { text: "新しい場所やイベントに行くとワクワクする", trait: "E" },
+            { text: "事実よりも、その裏にある意味や可能性を考えるのが好きだ", trait: "N" },
+            { text: "決断を下すときは、感情よりも論理的な正しさを優先する", trait: "T" },
+            { text: "計画はあらかじめ細かく決めておきたい", trait: "J" },
+            { text: "期限ギリギリにならないとやる気が出ない", trait: "P" }
+        ];
+
+        let currentIdx = 0;
+        let scores = { E:0, I:0, N:0, S:0, T:0, F:0, J:0, P:0 };
+
+        function updateQuiz() {
+            document.getElementById("question").innerText = questions[currentIdx].text;
+            document.getElementById("bar").style.width = ((currentIdx + 1) / questions.length * 100) + "%";
+        }
+
+        function answer(val) {
+            const q = questions[currentIdx];
+            const opposite = { "E":"I", "N":"S", "T":"F", "J":"P", "P":"J" };
+            
+            if (val === 1) scores[q.trait]++;
+            else if (val === -1) scores[opposite[q.trait]]++;
+
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                updateQuiz();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById("quiz-area").style.display = "none";
+            document.getElementById("result-area").style.display = "block";
+
+            let mbti = "";
+            mbti += (scores.E >= scores.I) ? "E" : "I";
+            mbti += (scores.N >= scores.S) ? "N" : "S";
+            mbti += (scores.T >= scores.F) ? "T" : "F";
+            mbti += (scores.J >= scores.P) ? "J" : "P";
+
+            document.getElementById("type").innerText = mbti;
+        }
+
+        updateQuiz();
+    </script>
+</body>
+</html>
